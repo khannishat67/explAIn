@@ -2,6 +2,7 @@ plugins {
     id("java")
     id("org.jetbrains.kotlin.jvm") version "2.1.0"
     id("org.jetbrains.intellij.platform") version "2.5.0"
+    id("net.researchgate.release") version "3.1.0"
 }
 
 group = "com.niktech"
@@ -49,5 +50,14 @@ tasks {
     }
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         kotlinOptions.jvmTarget = "21"
+    }
+}
+
+// Configure the release task
+release {
+    tagTemplate = "v\$version"
+    failOnCommitNeeded = true
+    git {
+        requireBranch.set("master")
     }
 }
