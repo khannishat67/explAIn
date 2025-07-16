@@ -56,7 +56,7 @@ tasks {
 // Configure the release task
 release {
     tagTemplate = "v\$version"
-    failOnCommitNeeded = true
+    failOnCommitNeeded = false
     git {
         requireBranch.set("master")
     }
