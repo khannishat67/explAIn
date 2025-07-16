@@ -1,0 +1,44 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
+    <id>com.niktech.explain</id>
+
+    <!-- Public plugin name should be written in Title Case.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
+    <name>ExplAIn</name>
+
+    <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
+    <vendor url="https://www.github.com/khannishat67">Nishat Khan</vendor>
+
+    <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
+    <description><![CDATA[
+ExplAIn is an IntelliJ plugin that provides AI-generated deep dive explanations for the currently selected Java or Kotlin method.
+
+**How to use:**
+- Add your OpenAI API key in the ExplAIn Settings page (`File` > `Settings` > `Tools` > `ExplAIn Settings`).
+- To get an explanation, place your cursor inside a method and press `Ctrl + Alt + E` or use the "Explain Current Method" action from the context menu.
+
+This plugin helps you understand complex code by leveraging AI-powered insights directly in your IDE.
+]]></description>
+
+    <!-- Product and plugin compatibility requirements.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.java</depends>
+
+    <!-- Extension points defined by the plugin.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
+    <extensions defaultExtensionNs="com.intellij">
+        <applicationService serviceImplementation="com.niktech.explain.config.AISettings" />
+        <projectConfigurable instance="com.niktech.explain.config.AISettingsConfigurable" displayName="ExplAIn Settings"/>
+    </extensions>
+    <actions>
+        <action id="ExplainMethodAction"
+                class="com.niktech.explain.ExplainMethodAction"
+                text="Explain Current Method"
+                description="Explains Java method using AI">
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt E"/>
+        </action>
+    </actions>
+</idea-plugin>
