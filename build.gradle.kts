@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.niktech"
-version = "1.0-SNAPSHOT"
+version = "1.1.2-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -19,8 +19,6 @@ repositories {
 // Read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin.html
 dependencies {
     implementation("org.json:json:20090211")
-    implementation("io.github.oshai:kotlin-logging-jvm:5.1.0")
-    implementation(group = "ch.qos.logback", name = "logback-classic", version = "1.5.18")
     intellijPlatform {
         create("IC", "2025.1")
         testFramework(org.jetbrains.intellij.platform.gradle.TestFrameworkType.Platform)
@@ -57,6 +55,7 @@ tasks {
 release {
     tagTemplate = "v\$version"
     failOnCommitNeeded = false
+
     git {
         requireBranch.set("master")
     }

@@ -1,7 +1,6 @@
 package com.niktech.explain.ai
 
 import com.niktech.explain.config.AISettings
-import io.github.oshai.kotlinlogging.KotlinLogging
 import org.json.JSONArray
 import org.json.JSONObject
 import java.net.HttpURLConnection
@@ -9,7 +8,6 @@ import java.net.URL
 
 
 object AIClient {
-    private val logger = KotlinLogging.logger {  }
 
     private val apiKey: String
         get() = AISettings.getInstance().state.apiKey

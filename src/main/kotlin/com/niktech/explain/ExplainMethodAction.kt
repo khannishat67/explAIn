@@ -12,27 +12,16 @@ import com.intellij.psi.util.PsiTreeUtil
 import com.niktech.explain.ai.AIClient
 import com.niktech.explain.config.AISettings
 import com.niktech.explain.data.MethodInfo
-import io.github.oshai.kotlinlogging.KotlinLogging
 import java.awt.BorderLayout
-import java.awt.Color
 import java.awt.Dimension
 import java.awt.Point
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
-import javax.swing.BorderFactory
-import javax.swing.JButton
-import javax.swing.JLabel
-import javax.swing.JPanel
-import javax.swing.JScrollPane
-import javax.swing.JTextArea
-import javax.swing.SwingUtilities
-import javax.swing.UIManager
+import javax.swing.*
 
 class ExplainMethodAction : AnAction() {
-    private val logger = KotlinLogging.logger { }
 
     override fun actionPerformed(event: AnActionEvent) {
-        logger.info { "Enter actionPerformed" }
         val editor = event.getData(CommonDataKeys.EDITOR) ?: return
         val project = event.getData(CommonDataKeys.PROJECT) ?: return
         val psiFile = event.getData(CommonDataKeys.PSI_FILE) ?: return
@@ -63,7 +52,6 @@ class ExplainMethodAction : AnAction() {
                 .showInBestPositionFor(editor)
             return
         }
-        logger.info { "API Key is set, proceeding with method explanation" }
         val offset = editor.caretModel.offset
         val element = psiFile.findElementAt(offset) ?: return
         val method = PsiTreeUtil.getParentOfType(element, PsiMethod::class.java) ?: return
@@ -161,12 +149,10 @@ class ExplainMethodAction : AnAction() {
                     methodInfo.fieldInfo,
                     methodInfo.classAnnotations
                 )
-                logger.info { explanation }
                 ApplicationManager.getApplication().invokeLater {
                     explanationArea.text = explanation
                 }
             } catch (e: Exception) {
-                logger.error(e) { "Error getting explanation" }
                 ApplicationManager.getApplication().invokeLater {
                     explanationArea.text = "Error: ${e.message}"
                 }
