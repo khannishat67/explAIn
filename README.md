@@ -1,15 +1,15 @@
-# Kotlin/Java Gradle Project - IntelliJ Platform Plugin
+# explAIn - IntelliJ Platform Plugin
 
 ## Overview
-This project is an IntelliJ Platform plugin built with Kotlin and Java, managed by Gradle. The plugin provides instant explanations of Java code directly in your editor.
+explAIn is an IntelliJ Platform plugin built with Kotlin and Java, managed by Gradle. The plugin provides instant explanations of Java code directly in your editor.
 
 ## Features
 - Kotlin and Java interoperability
-- Gradle build automation
 - IntelliJ Platform plugin integration
 - Explains Java methods and their references under the cursor
 - Trigger explanations with the shortcut `Ctrl+Alt+E`
 - Uses OpenAI completions for code explanations
+- Uses code references for context
 
 ## Requirements
 - IntelliJ IDEA
