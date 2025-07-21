@@ -12,6 +12,7 @@ import com.intellij.psi.util.PsiTreeUtil
 import com.niktech.explain.ai.AIClient
 import com.niktech.explain.config.AISettings
 import com.niktech.explain.data.MethodInfo
+import com.openai.helpers.ChatCompletionAccumulator
 import java.awt.BorderLayout
 import java.awt.Dimension
 import java.awt.Point
@@ -143,15 +144,28 @@ class ExplainMethodAction : AnAction() {
                     val classAnnotations = clazz?.annotations?.joinToString("\n") { "@${it.qualifiedName}" }
                     MethodInfo(methodText, relatedMethodSources, fieldInfo, classAnnotations, method.name)
                 }
-                val explanation = AIClient.explainCode(
+                val chatCompletionAccumulator = ChatCompletionAccumulator.create()
+                var isFirstChunk = true
+                AIClient.explainCode(
                     methodInfo.methodText,
                     methodInfo.relatedMethodSources,
                     methodInfo.fieldInfo,
                     methodInfo.classAnnotations
-                )
-                ApplicationManager.getApplication().invokeLater {
-                    explanationArea.text = explanation
-                }
+                ).stream()
+                    .peek(chatCompletionAccumulator::accumulate)
+                    .flatMap { completionChunk -> completionChunk.choices().stream() }
+                .flatMap { choice -> choice.delta().content().stream() }
+                    .forEach { content ->
+                        ApplicationManager.getApplication().invokeLater {
+                            if (isFirstChunk) {
+                                explanationArea.text = ""
+                                isFirstChunk = false
+                            } else {
+                                explanationArea.append(content)
+                            }
+                        }
+                    }
+
             } catch (e: Exception) {
                 ApplicationManager.getApplication().invokeLater {
                     explanationArea.text = "Error: ${e.message}"
